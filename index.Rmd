@@ -1,0 +1,499 @@
+---
+title: "Ideas Distribución de Presupuesto PGD 2024"
+# subtitle: "<br/>Facultad de Enfermería"
+author: "<br/> Profesor <br/> Alberto Rodríguez R"
+institute: "<br/><br/>Dirección Nacional de Planeación y Estadística <br/> Universidad Nacional de Colombia"
+date: "Última Actualización: `r Sys.Date()`"
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    seal: false
+    nature:
+      highlightStyle: solarized-light
+      highlightLines: true
+      countIncrementalSlides: false
+      ratio: 170:100
+
+---
+class: center, middle
+exclude: true
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+knitr::opts_chunk$set(collapse = TRUE,
+                      fig.retina = 3,
+                      echo = FALSE,
+                      fig.align='center')
+library(ggplot2)
+library(downloadthis)
+library(countdown)
+library(emo)
+library(icons)
+library(xaringanExtra)
+library(fontawesome)
+library(readxl)
+library(dplyr)
+library(writexl)
+library(ggplot2)
+library(ggrepel)
+library(gt)
+library(htmltools)
+library(downloadthis)
+xaringanExtra::use_tile_view()
+xaringanExtra::use_clipboard()
+xaringanExtra::use_webcam()
+xaringanExtra::use_share_again()
+xaringanExtra::use_fit_screen()
+xaringanExtra::use_panelset()
+xaringanExtra::use_scribble()
+xaringanExtra::use_tachyons()
+xaringanExtra::use_extra_styles(hover_code_line = TRUE, mute_unhighlighted_code = TRUE)
+xaringanExtra::use_progress_bar(color = "#0051BA", location = "top", height = "10px")
+xaringanExtra::use_broadcast()
+```
+
+---
+
+class: title-slide, center, middle, hide-count, hide-logo
+
+background-image: url("https://www.arquitecturapanamericana.com/wp-content/gallery/edificio-facultad-de-enfermeria-universidad-nacional-de-colombia-sede-bogota/1158ARN.jpg")
+background-size: cover
+
+
+# <br> .big-text.black[ <p style="color:#ffffff;">Ideas para la distribución de Recursos Financieros <br> PGD 2022-2024</p>
+]
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+.footnote[
+.white[Créditos de la Imagen: ][Arquitectura Panamericana](https://www.arquitecturapanamericana.com/wp-content/gallery/edificio-facultad-de-enfermeria-universidad-nacional-de-colombia-sede-bogota/1158ARN.jpg)
+]
+
+
+---
+
+exclude: true
+
+```{r}
+SedesInfer <- read_excel("Datos/SedesInfer.xlsx", 
+                         sheet = "General")
+
+SedesNal <- read_excel("Datos/SedesInfer.xlsx", 
+                         sheet = "Administrativos")
+```
+
+---
+class: center, middle
+
+# Algunas Estadísticas por Sedes de la Universidad
+
+---
+# Estadísticas por sedes
+
+.panelset[
+  
+.panel[.panel-name[Admitidos]
+
+<iframe width="100%" height="410px" frameborder="0" mozallowfullscreen="true" webkitallowfullscreen="true" allowfullscreen="true" src="https://estadisticaun.github.io/G_AspAdm/Nal/Admitidos/A_sede.html"></iframe>
+
+<font size=2><i><b>Fuente:</b> Dirección Nacional de Planeación y Estadística con base en información provista por la Dirección Nacional de Admisiones</i></font>
+]
+
+.panel[.panel-name[Matriculados]
+
+<iframe width="100%" height="370px" frameborder="0" mozallowfullscreen="true" webkitallowfullscreen="true" allowfullscreen="true" src="https://estadisticaun.github.io/G_Matriculados/Nal/Matriculados/A_sede.html"></iframe>
+
+<font size=1><i><b>Fuente:</b> Dirección Nacional de Planeación y Estadística con base en información provista por la Dirección Nacional de Información Académica</i></font>
+]
+
+.panel[.panel-name[Graduados]
+<iframe width="100%" height="410px" frameborder="0" mozallowfullscreen="true" webkitallowfullscreen="true" allowfullscreen="true" src="https://estadisticaun.github.io/G_Graduados/Nal/Graduados/A_sede.html"></iframe>
+
+<font size=2><i><b>Fuente:</b> Dirección Nacional de Planeación y Estadística con base en información provista por la Secretaría General</i></font>
+]
+
+.panel[.panel-name[Docentes]
+<iframe width="100%" height="410px" frameborder="0" mozallowfullscreen="true" webkitallowfullscreen="true" allowfullscreen="true" src="https://estadisticaun.github.io/G_Docentes/Nal/Carrera/A_sede.html"></iframe>
+
+<font size=2><i><b>Fuente:</b> Dirección Nacional de Planeación y Estadística con base en información provista por la Dirección Nacional de Talento Humano</i></font>
+]
+
+.panel[.panel-name[Funcionarios]
+<iframe width="100%" height="410px" frameborder="0" mozallowfullscreen="true" webkitallowfullscreen="true" allowfullscreen="true" src="https://estadisticaun.github.io/G_Administrativos/Nal/Carrera/A_sede.html"></iframe>
+
+<font size=2><i><b>Fuente:</b> Dirección Nacional de Planeación y Estadística con base en información provista por la Dirección Nacional de Talento Humano</i></font> 
+]
+
+.panel[.panel-name[Grupos]
+
+]
+
+.panel[.panel-name[Conclusión]
+
+]
+]
+
+---
+# Distribución inicial de Recursos Financieros PGD 2019-2021
+
+```{r F3InvProy, fig.cap='Fuente: Dirección Nacional de Planeación y Estadística'}
+
+RecursosPGD21 <- SedesNal %>% mutate(Miles = round(Miles)) %>% 
+  mutate(pct = Miles/sum(Miles),
+         Porcentaje = scales::percent(pct)) %>% 
+  select(SEDE, Miles, Porcentaje) %>% 
+  arrange(desc(Miles)) %>% 
+  rename(`Miles de Millones` = Miles) %>% 
+  add_row(SEDE="TOTAL PRESUPUESTO PGD 2019-2021", 
+          `Miles de Millones` = 407712, 
+          Porcentaje = "100%")
+  
+
+gt(RecursosPGD21)%>% 
+  tab_header(title = md("Total Distribución Inicial = 407.712 Millones")) %>%    tab_options(heading.align = "left") %>%
+cols_align(
+align = c( "center"),
+columns = everything()
+) %>% 
+tab_style(style = list(cell_text(weight = "bold")),
+locations = cells_column_labels(everything())) %>% 
+  tab_style(style = list(cell_fill(color = "black", alpha = 0.2)),
+locations = cells_column_labels(everything()))%>% 
+  tab_source_note(
+    source_note = md("Fuente: Dirección Nacional de Planeación")
+    ) %>%
+  tab_source_note(
+    RecursosPGD21 %>%
+      download_this(
+        output_name = "Rexcursos financieros proyectos",
+        output_extension = ".xlsx", # Salida en Excel
+        button_label = "Descargar Excel",
+        button_type = "info"
+      ))
+```
+
+
+
+
+---
+## .center[Recursos PGD 2019-2021 vs Estadísticas por Sedes - Sedes Andinas]
+
+.panelset[
+  
+  .panel[.panel-name[Admitidos]
+```{r, echo=FALSE}
+SedesNalAdm <- SedesInfer %>% filter(SEDE%in%c("BOGOTÁ", "MEDELLÍN", "MANIZALES", "PALMIRA", "NIVEL NACIONAL"))
+
+ggplot(SedesNalAdm, aes(x = Admitidos_P, y = Porcentaje_Inf)) + 
+  geom_point(aes(col = SEDE),size = 6) +
+  geom_segment(aes(x = 0, y = 0, xend = 0.8, yend = 0.8), col = "red")+ 
+  geom_label_repel(aes(label = SEDE), box.padding = 1)+
+  scale_y_continuous(limits=c(0, 0.8), 
+                     breaks = seq(0, 0.8, .2), 
+                     label = c('0%', '20%', '40%', '60%', '80%'))+
+  scale_x_continuous(limits=c(0, 0.8), 
+                     breaks = seq(0, 0.8, .2), 
+                     label = c('0%', '20%', '40%', '60%', '80%'))+
+  xlab(" \n Porcentaje de Estudiantes admitidos 2021-2") +
+  ylab("Distribución de Recursos PGD 2019-2021 \n ") +
+  theme(axis.title.x = element_text(color="black", size=13, face="bold"),
+        axis.title.y = element_text(color="black", size=13, face="bold" ),
+        legend.title = element_text(colour="blue", size=10, face="bold", vjust = 0.5),
+        legend.position = "bottom")
+```
+  ]
+  
+  .panel[.panel-name[Matriculados]
+```{r echo=FALSE}
+SedesNalMat <- SedesInfer %>% filter(SEDE%in%c("BOGOTÁ", "MEDELLÍN", "MANIZALES", "PALMIRA", "NIVEL NACIONAL"))
+
+ggplot(SedesNalMat, aes(x = Matricula_P, y = Porcentaje_Inf)) + 
+  geom_point(aes(col = SEDE),size = 6) +
+  geom_segment(aes(x = 0, y = 0, xend = 0.8, yend = 0.8), col = "red")+ 
+  geom_label_repel(aes(label = SEDE), box.padding = 1)+
+  scale_y_continuous(limits=c(0, 0.8), 
+                     breaks = seq(0, 0.8, .2), 
+                     label = c('0%', '20%', '40%', '60%', '80%'))+
+  scale_x_continuous(limits=c(0, 0.8), 
+                     breaks = seq(0, 0.8, .2), 
+                     label = c('0%', '20%', '40%', '60%', '80%'))+
+  xlab(" \n Porcentaje de Estudiantes matriculados 2021-1") +
+  ylab("Distribución de Recursos PGD 2019-2021 \n ") +
+  theme(axis.title.x = element_text(color="black", size=13, face="bold"),
+        axis.title.y = element_text(color="black", size=13, face="bold" ),
+        legend.title = element_text(colour="blue", size=10, face="bold", vjust = 0.5),
+        legend.position = "bottom")
+```         
+         
+  ]
+
+  .panel[.panel-name[Graduados]
+```{r echo=FALSE}
+SedesNalGra <- SedesInfer %>% filter(SEDE%in%c("BOGOTÁ", "MEDELLÍN", "MANIZALES", "PALMIRA", "NIVEL NACIONAL"))
+
+ggplot(SedesNalGra, aes(x = Graduados_P, y = Porcentaje_Inf)) + 
+  geom_point(aes(col = SEDE),size = 6) +
+  geom_segment(aes(x = 0, y = 0, xend = 0.8, yend = 0.8), col = "red")+ 
+  geom_label_repel(aes(label = SEDE), box.padding = 1)+
+  scale_y_continuous(limits=c(0, 0.8), 
+                     breaks = seq(0, 0.8, .2), 
+                     label = c('0%', '20%', '40%', '60%', '80%'))+
+  scale_x_continuous(limits=c(0, 0.8), 
+                     breaks = seq(0, 0.8, .2), 
+                     label = c('0%', '20%', '40%', '60%', '80%'))+
+  xlab(" \n Porcentaje de Estudiantes Graduados 2021-2") +
+  ylab("Distribución de Recursos PGD 2019-2021 \n ") +
+  theme(axis.title.x = element_text(color="black", size=13, face="bold"),
+        axis.title.y = element_text(color="black", size=13, face="bold" ),
+        legend.title = element_text(colour="blue", size=10, face="bold", vjust = 0.5),
+        legend.position = "bottom")
+```         
+         
+  ]  
+
+  .panel[.panel-name[Docentes]
+```{r echo=FALSE}
+SedesNalDoc <- SedesInfer %>% filter(SEDE%in%c("BOGOTÁ", "MEDELLÍN", "MANIZALES", "PALMIRA", "NIVEL NACIONAL"))
+
+ggplot(SedesNalDoc, aes(x = Docentes_P, y = Porcentaje_Inf)) + 
+  geom_point(aes(col = SEDE),size = 6) +
+  geom_segment(aes(x = 0, y = 0, xend = 0.8, yend = 0.8), col = "red")+ 
+  geom_label_repel(aes(label = SEDE), box.padding = 1)+
+  scale_y_continuous(limits=c(0, 0.8), 
+                     breaks = seq(0, 0.8, .2), 
+                     label = c('0%', '20%', '40%', '60%', '80%'))+
+  scale_x_continuous(limits=c(0, 0.8), 
+                     breaks = seq(0, 0.8, .2), 
+                     label = c('0%', '20%', '40%', '60%', '80%'))+
+  xlab(" \n Porcentaje Docentes de Carrera 2021-2") +
+  ylab("Distribución de Recursos PGD 2019-2021 \n ") +
+  theme(axis.title.x = element_text(color="black", size=13, face="bold"),
+        axis.title.y = element_text(color="black", size=13, face="bold" ),
+        legend.title = element_text(colour="blue", size=10, face="bold", vjust = 0.5),
+        legend.position = "bottom")
+
+```         
+         
+  ] 
+  
+
+  .panel[.panel-name[Funcionarios]
+```{r echo=FALSE}
+SedesNalAnd <- SedesNal %>% filter(SEDE%in%c("BOGOTÁ", "MEDELLÍN", "MANIZALES", "PALMIRA", "NIVEL NACIONAL"))
+  
+ggplot(SedesNalAnd, aes(x = Funcionarios_P, y = Porcentaje)) + 
+  geom_point(aes(col = SEDE),size = 6) +
+  geom_segment(aes(x = 0, y = 0, xend = 0.8, yend = 0.8), col = "red")+ 
+  geom_label_repel(aes(label = SEDE), box.padding = 1)+
+  scale_y_continuous(limits=c(0, 0.8), 
+                     breaks = seq(0, 0.8, .2), 
+                     label = c('0%', '20%', '40%', '60%', '80%'))+
+  scale_x_continuous(limits=c(0, 0.8), 
+                     breaks = seq(0, 0.8, .2), 
+                     label = c('0%', '20%', '40%', '60%', '80%'))+
+    xlab(" \n Porcentaje de Funcionarios de Carrera") +
+    ylab("Distribución de Recursos PGD 2019-2021 \n ") +
+  theme(axis.title.x = element_text(color="black", size=13, face="bold"),
+    axis.title.y = element_text(color="black", size=13, face="bold" ),
+    legend.title = element_text(colour="blue", size=10, face="bold", vjust = 0.5),
+    legend.position = "bottom")
+```         
+         
+  ]
+
+  .panel[.panel-name[Grupos]
+```{r echo=FALSE}
+SedesNalGru <- SedesInfer %>% filter(SEDE%in%c("BOGOTÁ", "MEDELLÍN", "MANIZALES", "PALMIRA", "NIVEL NACIONAL"))
+
+ggplot(SedesNalGru, aes(x = Grupos_P, y = Porcentaje_Inf)) + 
+  geom_point(aes(col = SEDE),size = 6) +
+  geom_segment(aes(x = 0, y = 0, xend = 0.8, yend = 0.8), col = "red")+ 
+  geom_label_repel(aes(label = SEDE), box.padding = 1)+
+  scale_y_continuous(limits=c(0, 0.8), 
+                     breaks = seq(0, 0.8, .2), 
+                     label = c('0%', '20%', '40%', '60%', '80%'))+
+  scale_x_continuous(limits=c(0, 0.8), 
+                     breaks = seq(0, 0.8, .2), 
+                     label = c('0%', '20%', '40%', '60%', '80%'))+
+  xlab(" \n Porcentaje Grupos de Investigación 2021") +
+  ylab("Distribución de Recursos PGD 2019-2021 \n ") +
+  theme(axis.title.x = element_text(color="black", size=13, face="bold"),
+        axis.title.y = element_text(color="black", size=13, face="bold" ),
+        legend.title = element_text(colour="blue", size=10, face="bold", vjust = 0.5),
+        legend.position = "bottom")
+```         
+         
+  ]  
+  
+  .panel[.panel-name[Conclusión]
+```{r echo=FALSE}
+
+```         
+         
+  ] 
+]
+
+
+---
+## .center[Recursos PGD 2019-2021 vs Estadísticas por Sedes - La Paz + SPN]
+
+.panelset[
+  
+  .panel[.panel-name[Admitidos]
+```{r, echo=FALSE}
+SedesNalAdm <- SedesInfer %>% filter(SEDE%in%c("LA PAZ", "AMAZONÍA", "CARIBE", "ORINOQUÍA", "TUMACO"))
+
+ggplot(SedesNalAdm, aes(x = Admitidos_P, y = Porcentaje_Inf)) + 
+  geom_point(aes(col = SEDE),size = 6) +
+  geom_segment(aes(x = 0, y = 0, xend = 0.1, yend = 0.1), col = "red")+ 
+  geom_label_repel(aes(label = SEDE), box.padding = 1)+
+  scale_y_continuous(limits=c(0, 0.1), 
+                     breaks = seq(0, 0.1, .02), 
+                     label = c('0%', '2%', '4%', '6%', '8%', '10%'))+
+  scale_x_continuous(limits=c(0, 0.1), 
+                     breaks = seq(0, 0.1, .02), 
+                     label = c('0%', '2%', '4%', '6%', '8%', '10%'))+
+  xlab(" \n Porcentaje de Estudiantes admitidos 2021-2") +
+  ylab("Distribución de Recursos PGD 2019-2021 \n ") +
+  theme(axis.title.x = element_text(color="black", size=13, face="bold"),
+        axis.title.y = element_text(color="black", size=13, face="bold" ),
+        legend.title = element_text(colour="blue", size=10, face="bold", vjust = 0.5),
+        legend.position = "bottom")
+```
+  ]
+  
+  .panel[.panel-name[Matriculados]
+```{r echo=FALSE}
+SedesSPNMat <- SedesInfer %>% filter(SEDE%in%c("LA PAZ", "AMAZONÍA", "CARIBE", "ORINOQUÍA", "TUMACO"))
+
+ggplot(SedesSPNMat, aes(x = Matricula_P, y = Porcentaje_Inf)) + 
+  geom_point(aes(col = SEDE),size = 6) +
+  geom_segment(aes(x = 0, y = 0, xend = 0.1, yend = 0.1), col = "red")+ 
+  geom_label_repel(aes(label = SEDE), box.padding = 1)+
+  scale_y_continuous(limits=c(0, 0.1), 
+                     breaks = seq(0, 0.1, .02), 
+                     label = c('0%', '2%', '4%', '6%', '8%', '10%'))+
+  scale_x_continuous(limits=c(0, 0.1), 
+                     breaks = seq(0, 0.1, .02), 
+                     label = c('0%', '2%', '4%', '6%', '8%', '10%'))+
+  xlab(" \n Porcentaje de Estudiantes matriculados 2021-1") +
+  ylab("Distribución de Recursos PGD 2019-2021 \n ") +
+  theme(axis.title.x = element_text(color="black", size=13, face="bold"),
+        axis.title.y = element_text(color="black", size=13, face="bold" ),
+        legend.title = element_text(colour="blue", size=10, face="bold", vjust = 0.5),
+        legend.position = "bottom")
+```         
+         
+  ]
+
+  .panel[.panel-name[Graduados]
+```{r echo=FALSE}
+SedesSPNGra <- SedesInfer %>% filter(SEDE%in%c("LA PAZ", "AMAZONÍA", "CARIBE", "ORINOQUÍA", "TUMACO"))
+
+ggplot(SedesSPNGra, aes(x = Graduados_P, y = Porcentaje_Inf)) + 
+  geom_point(aes(col = SEDE),size = 6) +
+  geom_segment(aes(x = 0, y = 0, xend = 0.1, yend = 0.1), col = "red")+ 
+  geom_label_repel(aes(label = SEDE), box.padding = 1)+
+  scale_y_continuous(limits=c(0, 0.1), 
+                     breaks = seq(0, 0.1, .02), 
+                     label = c('0%', '2%', '4%', '6%', '8%', '10%'))+
+  scale_x_continuous(limits=c(0, 0.1), 
+                     breaks = seq(0, 0.1, .02), 
+                     label = c('0%', '2%', '4%', '6%', '8%', '10%'))+
+  xlab(" \n Porcentaje de Estudiantes Graduados 2021-2") +
+  ylab("Distribución de Recursos PGD 2019-2021 \n ") +
+  theme(axis.title.x = element_text(color="black", size=13, face="bold"),
+        axis.title.y = element_text(color="black", size=13, face="bold" ),
+        legend.title = element_text(colour="blue", size=10, face="bold", vjust = 0.5),
+        legend.position = "bottom")
+```         
+   ]  
+
+  .panel[.panel-name[Docentes]
+```{r echo=FALSE}
+SedesSPNDoc <- SedesInfer %>% filter(SEDE%in%c("LA PAZ", "AMAZONÍA", "CARIBE", "ORINOQUÍA", "TUMACO"))
+
+ggplot(SedesSPNDoc, aes(x = Docentes_P, y = Porcentaje_Inf)) + 
+  geom_point(aes(col = SEDE),size = 6) +
+  geom_segment(aes(x = 0, y = 0, xend = 0.1, yend = 0.1), col = "red")+ 
+  geom_label_repel(aes(label = SEDE), box.padding = 1)+
+  scale_y_continuous(limits=c(0, 0.1), 
+                     breaks = seq(0, 0.1, .02), 
+                     label = c('0%', '2%', '4%', '6%', '8%', '10%'))+
+  scale_x_continuous(limits=c(0, 0.1), 
+                     breaks = seq(0, 0.1, .02), 
+                     label = c('0%', '2%', '4%', '6%', '8%', '10%'))+
+  xlab(" \n Porcentaje Docentes de Carrera 2021-2") +
+  ylab("Distribución de Recursos PGD 2019-2021 \n ") +
+  theme(axis.title.x = element_text(color="black", size=13, face="bold"),
+        axis.title.y = element_text(color="black", size=13, face="bold" ),
+        legend.title = element_text(colour="blue", size=10, face="bold", vjust = 0.5),
+        legend.position = "bottom")
+```         
+         
+  ] 
+  
+
+  .panel[.panel-name[Funcionarios]
+```{r echo=FALSE}
+SedesNalSPN <- SedesNal %>% filter(SEDE%in%c("LA PAZ", "AMAZONÍA", "CARIBE", "ORINOQUÍA", "TUMACO"))
+
+ggplot(SedesNalSPN, aes(x = Funcionarios_P, y = Porcentaje)) + 
+  geom_point(aes(col = SEDE),size = 6) +
+  geom_segment(aes(x = 0, y = 0, xend = 0.1, yend = 0.1), col = "red")+ 
+  geom_label_repel(aes(label = SEDE), box.padding = 1)+
+  scale_y_continuous(limits=c(0, 0.1), 
+                     breaks = seq(0, 0.1, .02), 
+                     label = c('0%', '2%', '4%', '6%', '8%', '10%'))+
+  scale_x_continuous(limits=c(0, 0.1), 
+                     breaks = seq(0, 0.1, .02), 
+                     label = c('0%', '2%', '4%', '6%', '8%', '10%'))+
+  xlab(" \n Porcentaje de Funcionarios de Carrera") +
+  ylab("Distribución de Recursos PGD 2019-2021 \n ") +
+  theme(axis.title.x = element_text(color="black", size=13, face="bold"),
+        axis.title.y = element_text(color="black", size=13, face="bold" ),
+        legend.title = element_text(colour="blue", size=10, face="bold", vjust = 0.5),
+        legend.position = "bottom")
+```         
+         
+  ]
+
+  .panel[.panel-name[Grupos]
+```{r echo=FALSE}
+SedesSPNGru <- SedesInfer %>% filter(SEDE%in%c("LA PAZ", "AMAZONÍA", "CARIBE", "ORINOQUÍA", "TUMACO"))
+
+ggplot(SedesSPNGru, aes(x = Grupos_P, y = Porcentaje_Inf)) + 
+  geom_point(aes(col = SEDE),size = 6) +
+  geom_segment(aes(x = 0, y = 0, xend = 0.1, yend = 0.1), col = "red")+ 
+  geom_label_repel(aes(label = SEDE), box.padding = 1)+
+  scale_y_continuous(limits=c(0, 0.1), 
+                     breaks = seq(0, 0.1, .02), 
+                     label = c('0%', '2%', '4%', '6%', '8%', '10%'))+
+  scale_x_continuous(limits=c(0, 0.1), 
+                     breaks = seq(0, 0.1, .02), 
+                     label = c('0%', '2%', '4%', '6%', '8%', '10%'))+
+  xlab(" \n Porcentaje Grupos de Investigación 2021") +
+  ylab("Distribución de Recursos PGD 2019-2021 \n ") +
+  theme(axis.title.x = element_text(color="black", size=13, face="bold"),
+        axis.title.y = element_text(color="black", size=13, face="bold" ),
+        legend.title = element_text(colour="blue", size=10, face="bold", vjust = 0.5),
+        legend.position = "bottom")
+```         
+         
+  ]  
+  
+  .panel[.panel-name[Conclusión]
+```{r echo=FALSE}
+
+```         
+         
+  ] 
+]
+
+
+

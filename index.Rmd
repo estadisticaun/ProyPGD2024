@@ -85,6 +85,15 @@ SedesInfer <- read_excel("Datos/SedesInfer.xlsx",
 
 SedesNal <- read_excel("Datos/SedesInfer.xlsx", 
                          sheet = "Administrativos")
+
+Proy_Ejes <- read_excel("Datos/Pres_Proyectado.xlsx", 
+                         sheet = "Ejes")
+
+Proy_Programas <- read_excel("Datos/Pres_Proyectado.xlsx", 
+                         sheet = "Programas")
+
+Proy_Sedes <- read_excel("Datos/Pres_Proyectado.xlsx", 
+                         sheet = "Sedes")
 ```
 
 ---
@@ -130,13 +139,20 @@ class: center, middle
 ]
 
 .panel[.panel-name[Grupos]
-
+```{r , echo=FALSE, out.height="100%", fig.align='center'}
+knitr::include_graphics("imagenes/Grupos.png") 
+```
 ]
 
 .panel[.panel-name[Conclusión]
 
 ]
 ]
+
+---
+class: center, middle
+
+# Análisis Presupuesto PGD 2019-2021
 
 ---
 # Distribución inicial de Recursos Financieros PGD 2019-2021
@@ -177,6 +193,32 @@ locations = cells_column_labels(everything()))%>%
       ))
 ```
 
+---
+### .center[Comportamiento Estadísticas Vs Presupuesto por Sedes <br> Análisis de "Equidad" Presupuestal] 
+
+```{r, echo=FALSE}
+ggplot(data.frame(x = seq(0, 1, 0.1) , y = seq(0, 1, 0.1)), aes(x = x, y = y)) +
+  geom_segment(aes(x = 0, y = 0, xend = 1, yend = 1), col = "red", size = 2)+ 
+  annotate(
+    "text", label = "Presupuesto mayor \n  que esperado según \n cifras estadísticas",
+    x = 0.3, y = 0.7, size = 8, colour = "blue")+
+   annotate(
+    "text", label = "Presupuesto menor \n  que esperado según \n cifras estadísticas",
+    x = 0.7, y = 0.2, size = 8, colour = "green")+
+  scale_y_continuous(limits=c(0, 1), 
+                     breaks = seq(0, 1, .2), 
+                     label = c('0%', '20%', '40%', '60%', '80%', '100%'))+
+  scale_x_continuous(limits=c(0, 1), 
+                     breaks = seq(0, 1, .2), 
+                     label = c('0%', '20%', '40%', '60%', '80%', '100%'))+
+  xlab(" \n Comportamiento Cifras Estadísticas") +
+  ylab("Distribución de Recursos PGD 2019-2021 \n ")+
+   theme(axis.title.x = element_text(color="black", size=13, face="bold"),
+        axis.title.y = element_text(color="black", size=13, face="bold" ),
+        legend.title = element_text(colour="blue", size=10, face="bold", vjust = 0.5),
+        legend.position = "bottom")
+  
+```
 
 
 
@@ -495,5 +537,118 @@ ggplot(SedesSPNGru, aes(x = Grupos_P, y = Porcentaje_Inf)) +
   ] 
 ]
 
+---
+class: center, middle
 
+# Proyección Presupuesto PGD 2022-2024
 
+<br>
+<br>
+<br>
+
+<h1><p style="color:red;">Presupuesto Estimado Disponible <br><br> $427.350 millones</p></h1>
+
+---
+class: center, middle
+
+# Escenario 1 <br><br> Comportamiento Semejante al PGD 2019-2021
+
+---
+# Presupuesto por Ejes del PGD 2024
+
+```{r, fig.cap='Fuente: Dirección Nacional de Planeación y Estadística'}
+
+Proy_Ejes <- Proy_Ejes %>% mutate(PORCENTAJE = scales::percent(PORCENTAJE))
+
+gt(Proy_Ejes) %>% 
+tab_header(title = md("Distribución Presupuesto en Miles de Millones")) %>% 
+tab_options(heading.align = "left") %>%
+cols_align(
+align = c( "left"),
+columns = everything()
+) %>%
+tab_style(style = list(cell_text(weight = "bold")),
+locations = cells_column_labels(everything())) %>%
+  tab_style(style = list(cell_fill(color = "black", alpha = 0.2)),
+locations = cells_column_labels(everything()))%>%
+  tab_source_note(
+    source_note = md("Fuente: Dirección Nacional de Planeación")
+    ) %>%
+  tab_source_note(
+    Proy_Ejes %>%
+      download_this(
+        output_name = "Recursos financieros proyectos",
+        output_extension = ".xlsx", # Salida en Excel
+        button_label = "Descargar Excel",
+        button_type = "info"
+      ))
+```
+
+---
+## Presupuesto por Programas PGD 2024
+
+```{r, fig.cap='Fuente: Dirección Nacional de Planeación y Estadística'}
+
+Proy_Programas <- Proy_Programas %>% mutate(PORCENTAJE = scales::percent(PORCENTAJE))
+
+gt(Proy_Programas) %>% 
+tab_header(title = md("Distribución Presupuesto en Miles de Millones")) %>% 
+tab_options(heading.align = "left") %>%
+cols_align(
+align = c( "left"),
+columns = everything()
+) %>%
+tab_style(style = list(cell_text(weight = "bold")),
+locations = cells_column_labels(everything())) %>%
+  tab_style(style = list(cell_fill(color = "black", alpha = 0.2)),
+locations = cells_column_labels(everything()))%>%
+  tab_source_note(
+    source_note = md("Fuente: Dirección Nacional de Planeación")
+    ) %>%
+  tab_source_note(
+    Proy_Programas %>%
+      download_this(
+        output_name = "Recursos financieros proyectos",
+        output_extension = ".xlsx", # Salida en Excel
+        button_label = "Descargar Excel",
+        button_type = "info"
+      ))
+```
+
+---
+# Presupuesto por Sedes PGD 2024
+
+```{r, fig.cap='Fuente: Dirección Nacional de Planeación y Estadística'}
+
+Proy_Sedes <- Proy_Sedes %>% mutate(PORCENTAJE = scales::percent(PORCENTAJE))
+
+gt(Proy_Sedes) %>% 
+tab_header(title = md("Distribución Presupuesto en Miles de Millones")) %>% 
+tab_options(heading.align = "left") %>%
+cols_align(
+align = c( "left"),
+columns = everything()
+) %>%
+tab_style(style = list(cell_text(weight = "bold")),
+locations = cells_column_labels(everything())) %>%
+  tab_style(style = list(cell_fill(color = "black", alpha = 0.2)),
+locations = cells_column_labels(everything()))%>%
+  tab_source_note(
+    source_note = md("Fuente: Dirección Nacional de Planeación")
+    ) %>%
+  tab_source_note(
+    Proy_Sedes %>%
+      download_this(
+        output_name = "Recursos financieros proyectos",
+        output_extension = ".xlsx", # Salida en Excel
+        button_label = "Descargar Excel",
+        button_type = "info"
+      ))
+```
+
+---
+class: center, middle
+
+# Escenario 2 <br><br> Distribución con ajustes estratégicos 
+
+<h1><p style="color:red;">Acuerdo Grupo Directivo</p></h1>

@@ -139,7 +139,7 @@ class: center, middle
 ]
 
 .panel[.panel-name[Grupos]
-```{r , echo=FALSE, out.height="100%", fig.align='center'}
+```{r , echo=FALSE, out.height="80%", fig.align='center'}
 knitr::include_graphics("imagenes/Grupos.png") 
 ```
 ]
